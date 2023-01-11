@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import Clarifai from 'clarifai';
 
 //this is needed in order to use Clarifai API fuck knows why
-//window.process = { };
+window.process = { };
 
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
@@ -19,7 +19,7 @@ const PARTICLES_BG_PROPS = {
 }
 
 const app = new Clarifai.App({
- apiKey: 'a9010bd25fa44103b241285fabc12e17'
+ apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
 });
 
 
