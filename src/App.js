@@ -6,6 +6,10 @@ import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
 import { render } from '@testing-library/react';
 import React, {Component} from 'react';
+import Clarifai from 'clarifai';
+
+//this is needed in order to use Clarifai API fuck knows why
+//window.process = { };
 
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
@@ -13,6 +17,11 @@ const PARTICLES_BG_PROPS = {
   num: 200,
   color:"#ffffff",
 }
+
+const app = new Clarifai.App({
+ apiKey: 'a9010bd25fa44103b241285fabc12e17'
+});
+
 
 
 class App extends Component {
@@ -32,6 +41,7 @@ class App extends Component {
 
   render() {
     return (
+      
       <div className="App">
         {/* <ParticlesBg type="cobweb" bg={true} /> */}
         <ParticlesBg {...PARTICLES_BG_PROPS} />
