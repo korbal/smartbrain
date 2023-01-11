@@ -22,12 +22,6 @@ const PARTICLES_BG_PROPS = {
   color:"#ffffff",
 }
 
-const app = new Clarifai.App({
- apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
-});
-
-
-
 class App extends Component {
   constructor() {
     super();
@@ -45,7 +39,6 @@ class App extends Component {
 
   render() {
     return (
-      
       <div className="App">
         {/* <ParticlesBg type="cobweb" bg={true} /> */}
         <ParticlesBg {...PARTICLES_BG_PROPS} />
