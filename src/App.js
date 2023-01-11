@@ -11,6 +11,10 @@ import Clarifai from 'clarifai';
 //this is needed in order to use Clarifai API fuck knows why
 window.process = { };
 
+const app = new Clarifai.App({
+  apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
+})
+
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
   bg: true,
