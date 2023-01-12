@@ -53,7 +53,7 @@ class App extends Component {
       {
           "data": {
               "image": {
-                  "url": this.state.imageUrl
+                  "url": this.state.input
               }
           }
       }
