@@ -4,12 +4,10 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
-
 import React, {Component} from 'react';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
-//import Clarifai from 'clarifai';
+import Signin from './components/Signin/Signin';
 
-//this is needed in order to use Clarifai API fuck knows why
 window.process = { };
 
 /////////////////////////// Clarifai API /////////////////////////////////////
@@ -35,6 +33,7 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
+      route: 'signin',
     }
   }
   
@@ -97,19 +96,26 @@ class App extends Component {
 
   }
 
+  onRouteChange = (route) => {
+    this.setState({route: route});
+  }
   render() {
     return (
       <div className="App">
         {/* <ParticlesBg type="cobweb" bg={true} /> */}
         <ParticlesBg {...PARTICLES_BG_PROPS} />
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}  />
-        <FaceRecognition box={this.state.box}  imageUrl={this.state.imageUrl}/>
+        <Navigation onRouteChange={this.onRouteChange} />
+        { this.state.route === 'signin' 
+        ? <Signin onRouteChange={this.onRouteChange} />
+        : <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}  />
+            <FaceRecognition box={this.state.box}  imageUrl={this.state.imageUrl}/>
+          </div>
+        }
       </div>
     );
   }
 }
-
 export default App;
