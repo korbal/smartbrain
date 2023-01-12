@@ -4,7 +4,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
-import { render } from '@testing-library/react';
+
 import React, {Component} from 'react';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 //import Clarifai from 'clarifai';
@@ -17,7 +17,7 @@ const USER_ID = 'balint';
 const PAT = process.env.REACT_APP_CLARIFAI_PAT;
 const APP_ID = 'ztmsmartbrain';
 const MODEL_ID = 'face-detection'
-const IMAGE_URL = 'https://rare-gallery.com/uploads/posts/4576378-adrianne-palicki-bare-shoulders-women-celebrity-portrait.jpg';
+
 
 /////////////////////////// Particle background params /////////////////////////////////////
 const PARTICLES_BG_PROPS = {
