@@ -15,6 +15,40 @@ const app = new Clarifai.App({
   apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
 })
 
+
+const USER_ID = 'balint';
+const PAT = process.env.REACT_APP_CLARIFAI_PAT;
+const APP_ID = 'ztmsmartbrain';
+const MODEL_ID = 'face-detection'
+const IMAGE_URL = 'https://rare-gallery.com/uploads/posts/4576378-adrianne-palicki-bare-shoulders-women-celebrity-portrait.jpg';
+   
+
+   const raw = JSON.stringify({
+    "user_app_id": {
+        "user_id": USER_ID,
+        "app_id": APP_ID
+    },
+    "inputs": [
+        {
+            "data": {
+                "image": {
+                    "url": IMAGE_URL
+                }
+            }
+        }
+    ]
+});
+
+const requestOptions = {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Key ' + PAT
+    },
+    body: raw
+};
+
+
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
   bg: true,
@@ -33,8 +67,16 @@ class App extends Component {
     console.log(event.target.value);
   }
 
+  
   onButtonSubmit = () => {
     console.log('click');
+    
+    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+
   }
 
   render() {
