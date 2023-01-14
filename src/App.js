@@ -38,6 +38,8 @@ class App extends Component {
       isSignedIn: false,
     }
   }
+
+
   
   calculateFaceLocation = (boxdata) => {
     // const clarifaiFace = boxdata.outputs[0].data.regions[0].region_info.bounding_box;
