@@ -27,24 +27,27 @@ const PARTICLES_BG_PROPS = {
 }
 /////////////////////////// MAIN APP /////////////////////////////////////
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '', 
+    
+  }
+}
+
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: '', 
-        
-      }
-    }
+    this.state = initialState;
   }
 
  
@@ -122,11 +125,12 @@ class App extends Component {
               body: JSON.stringify({
                 id: this.state.user.id
               })
-            })
-            .then(response => response.json())
-            .then(count => {
+              })
+              .then(response => response.json())
+              .then(count => {
               this.setState(Object.assign(this.state.user, {entries: count}))
-            })
+              })
+              .catch(console.log)
            }
            this.displayFaceBox(this.calculateFaceLocation(boxdata))
            })
@@ -136,7 +140,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home') {
     this.setState({isSignedIn: true});
     }
