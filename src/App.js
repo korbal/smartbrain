@@ -11,11 +11,13 @@ import Register from './components/Register/Register';
 
 window.process = { };
 
-/////////////////////////// Clarifai API /////////////////////////////////////
+// moved to backend
+// /////////////////////////// Clarifai API /////////////////////////////////////
 const USER_ID = 'balint';
 const PAT = process.env.REACT_APP_CLARIFAI_PAT;
 const APP_ID = 'ztmsmartbrain';
 const MODEL_ID = 'face-detection'
+
 
 
 /////////////////////////// Particle background params /////////////////////////////////////
@@ -88,54 +90,36 @@ class App extends Component {
   }
   
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input});
-    const raw = JSON.stringify({
-    "user_app_id": {
-      "user_id": USER_ID,
-      "app_id": APP_ID
-    },
-    "inputs": [
-      {
-          "data": {
-              "image": {
-                  "url": this.state.input
-              }
-          }
-      }
-    ]
-    });
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Key ' + PAT
-      },
-      body: raw
-    };
-    
-    
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", requestOptions)
-        .then(response => response.json())
-        .then(result => (result.outputs[0].data.regions[0].region_info.bounding_box))
-        .then(boxdata => {
-           if(boxdata) {
-            fetch('http://localhost:3000/image',{
-              method: 'put',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({
-                id: this.state.user.id
-              })
-              })
-              .then(response => response.json())
-              .then(count => {
-              this.setState(Object.assign(this.state.user, {entries: count}))
-              })
-              .catch(console.log)
-           }
-           this.displayFaceBox(this.calculateFaceLocation(boxdata))
-           })
-        .catch(error => console.log('error', error));
-
+    this.setState({imageUrl: this.state.input}); 
+    // moved to backend
+   
+    // request to backend to handle clarifai api call
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+    .then(response => response.json()) // if response is ok, gives back boxdata to frame the face of the picture
+    .then(boxdata => {
+      if(boxdata) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            id: this.state.user.id
+          })
+          })
+          .then(response => response.json())
+          .then(count => {this.setState(Object.assign(this.state.user, {entries: count})) // store proper user data in state
+          })
+          .catch(console.log)
+       }
+       this.displayFaceBox(this.calculateFaceLocation(boxdata))
+       }
+    )
+    .catch(err => console.log(err));
   }
 
   onRouteChange = (route) => {
