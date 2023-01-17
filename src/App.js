@@ -13,11 +13,11 @@ window.process = { };
 
 // moved to backend
 // /////////////////////////// Clarifai API /////////////////////////////////////
-const USER_ID = 'balint';
-const PAT = process.env.REACT_APP_CLARIFAI_PAT;
-const APP_ID = 'ztmsmartbrain';
-const MODEL_ID = 'face-detection'
-const BACKEND_URL = 'https://smartbrain.cyclic.app/';
+// const USER_ID = 'balint';
+// const PAT = process.env.REACT_APP_CLARIFAI_PAT;
+// const APP_ID = 'ztmsmartbrain';
+// const MODEL_ID = 'face-detection'
+// const BACKEND_URL = 'https://smartbrain.cyclic.app/';
 
 
 
