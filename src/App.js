@@ -17,6 +17,7 @@ const USER_ID = 'balint';
 const PAT = process.env.REACT_APP_CLARIFAI_PAT;
 const APP_ID = 'ztmsmartbrain';
 const MODEL_ID = 'face-detection'
+const BACKEND_URL = 'https://smartbrain.cyclic.app/';
 
 
 
@@ -94,7 +95,7 @@ class App extends Component {
     // moved to backend
    
     // request to backend to handle clarifai api call
-    fetch('http://localhost:3000/imageurl', {
+    fetch('https://smartbrain.cyclic.app/imageurl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -104,7 +105,7 @@ class App extends Component {
     .then(response => response.json()) // if response is ok, gives back boxdata to frame the face of the picture
     .then(boxdata => {
       if(boxdata) {
-        fetch('http://localhost:3000/image', {
+        fetch('https://smartbrain.cyclic.app/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
