@@ -9,25 +9,16 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 
-window.process = { };
-
-// moved to backend
-// /////////////////////////// Clarifai API /////////////////////////////////////
-// const USER_ID = 'balint';
-// const PAT = process.env.REACT_APP_CLARIFAI_PAT;
-// const APP_ID = 'ztmsmartbrain';
-// const MODEL_ID = 'face-detection'
-// const BACKEND_URL = 'https://smartbrain.cyclic.app/';
-
-
-
-/////////////////////////// Particle background params /////////////////////////////////////
+const BACKEND_BASE_URL = "https://smartbrain.cyclic.app";
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
   bg: true,
   num: 200,
   color:"#ffffff",
 }
+
+window.process = { };
+
 /////////////////////////// MAIN APP /////////////////////////////////////
 
 const initialState = {
@@ -67,11 +58,10 @@ class App extends Component {
 
 
   calculateFaceLocation = (boxdata) => {
-    // const clarifaiFace = boxdata.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputimage');
     const width = Number(image.width);
     const height = Number(image.height);
-    console.log(width, height);
+    //console.log(width, height);
     return {
       leftCol: boxdata.left_col * width,
       topRow: boxdata.top_row * height,
@@ -81,21 +71,18 @@ class App extends Component {
   }
 
   displayFaceBox = (box) => {
-    console.log(box);
+    //console.log(box);
     this.setState({box: box});
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
     this.setState({input: event.target.value});
   }
   
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input}); 
-    // moved to backend
-   
+    this.setState({imageUrl: this.state.input}); // set imageUrl to input value
     // request to backend to handle clarifai api call
-    fetch('https://smartbrain.cyclic.app/imageurl', {
+    fetch(`${BACKEND_BASE_URL}/imageurl`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -105,7 +92,7 @@ class App extends Component {
     .then(response => response.json()) // if response is ok, gives back boxdata to frame the face of the picture
     .then(boxdata => {
       if(boxdata) {
-        fetch('https://smartbrain.cyclic.app/image', {
+        fetch(`${BACKEND_BASE_URL}/image`, {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -135,7 +122,6 @@ class App extends Component {
    const {isSignedIn, imageUrl, route, box} = this.state;
     return (
       <div className="App">
-        {/* <ParticlesBg type="cobweb" bg={true} /> */}
         <ParticlesBg {...PARTICLES_BG_PROPS} />
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         { route === 'home' 
@@ -150,11 +136,10 @@ class App extends Component {
           ? <Signin loadUser={this.loadUser}  onRouteChange={this.onRouteChange} />
           : <Register loadUser={this.loadUser}  onRouteChange={this.onRouteChange} />
         )
-        
-         
         }
       </div>
     );
   }
 }
+export {BACKEND_BASE_URL};
 export default App;

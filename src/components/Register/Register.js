@@ -1,4 +1,5 @@
 import React from "react";
+import { BACKEND_BASE_URL } from "../../App";
 
 class Register extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class Register extends React.Component {
   }
 
   onSubmitSignIn = () => {
-    fetch('https://smartbrain.cyclic.app/register', {
+    fetch(`${BACKEND_BASE_URL}/register`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
