@@ -19,6 +19,7 @@ Possible future improvements:
 - Store submitted images for a gallery view
 - Add documentation
 - Display a leaderboard on the home page wihout authentication
+- Display a spinner while logging in (it's intentionally slow because of bcrypt)
 
 ## Frontend
 
