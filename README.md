@@ -20,6 +20,7 @@ Possible future improvements:
 - Add documentation
 - Display a leaderboard on the home page wihout authentication
 - Display a spinner while logging in (it's intentionally slow because of bcrypt)
+- Blurring faces with a click
 
 ## Frontend
 
