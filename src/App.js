@@ -9,7 +9,10 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 
+//production backend url
 const BACKEND_BASE_URL = "https://smartbrain.cyclic.app";
+// development backend url
+// const BACKEND_BASE_URL = "http://localhost:3000";
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
   bg: true,
@@ -24,7 +27,7 @@ window.process = { };
 const initialState = {
   input: '',
   imageUrl: '',
-  box: {},
+  box: [],
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -55,24 +58,26 @@ class App extends Component {
     }})
   }
 
-
-
-  calculateFaceLocation = (boxdata) => {
+  calculateFaceLocation = (boxdataArray) => {
+    //console.log(boxdataArray)
     const image = document.getElementById('inputimage');
     const width = Number(image.width);
     const height = Number(image.height);
-    //console.log(width, height);
-    return {
-      leftCol: boxdata.left_col * width,
-      topRow: boxdata.top_row * height,
-      rightCol: width - (boxdata.right_col * width),
-      bottomRow: height - (boxdata.bottom_row * height)
-    }
-  }
+    return boxdataArray.map(boxdata => {
+        return {
+            leftCol: boxdata.left_col * width,
+            topRow: boxdata.top_row * height,
+            rightCol: width - (boxdata.right_col * width),
+            bottomRow: height - (boxdata.bottom_row * height)
+        }
+    });
+}
 
   displayFaceBox = (box) => {
     //console.log(box);
     this.setState({box: box});
+
+
   }
 
   onInputChange = (event) => {
@@ -82,7 +87,7 @@ class App extends Component {
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input}); // set imageUrl to input value
     // request to backend to handle clarifai api call
-    fetch(`${BACKEND_BASE_URL}/imageurl`, {
+        fetch(`${BACKEND_BASE_URL}/imageurl`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -90,6 +95,7 @@ class App extends Component {
       })
     })
     .then(response => response.json()) // if response is ok, gives back boxdata to frame the face of the picture
+     // check the response here, if it's an array of bounding boxes
     .then(boxdata => {
       if(boxdata) {
         fetch(`${BACKEND_BASE_URL}/image`, {
@@ -104,10 +110,10 @@ class App extends Component {
           })
           .catch(console.log)
        }
+      
        this.displayFaceBox(this.calculateFaceLocation(boxdata))
-       }
-    )
-    .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err))
   }
 
   onRouteChange = (route) => {
