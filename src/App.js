@@ -8,11 +8,14 @@ import React, {Component} from 'react';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
+import Modal from './components/Modal/Modal';
+import Profile from './components/Profile/Profile';
 
 //production backend url
-const BACKEND_BASE_URL = "https://smartbrain.cyclic.app";
+//const BACKEND_BASE_URL = "https://smartbrain.cyclic.app";
+
 // development backend url
-// const BACKEND_BASE_URL = "http://localhost:3000";
+ const BACKEND_BASE_URL = "http://localhost:3000";
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
   bg: true,
@@ -30,13 +33,15 @@ const initialState = {
   box: [],
   route: 'signin',
   isSignedIn: false,
+  isProfileOpen: false,
   user: {
     id: '',
     name: '',
     email: '',
     entries: 0,
     joined: '', 
-    
+    pet: '',
+    age: ''
   }
 }
 
@@ -118,21 +123,37 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState(initialState)
+     return this.setState(initialState)
     } else if (route === 'home') {
     this.setState({isSignedIn: true});
     }
     this.setState({route: route});
   }
+
+  toggleModal = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isProfileOpen: !prevState.isProfileOpen
+    }));
+  }
+
   render() {
-   const {isSignedIn, imageUrl, route, box} = this.state;
+   const {isSignedIn, imageUrl, route, box, isProfileOpen, user} = this.state;
     return (
       <div className="App">
         <ParticlesBg {...PARTICLES_BG_PROPS} />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} toggleModal={this.toggleModal}/>
+
+        {isProfileOpen &&
+        <Modal>
+          <Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleModal} user={user} />
+        </Modal>
+        }
         { route === 'home' 
         ? <div>
         <Logo />
+        
+
         <Rank name={this.state.user.name} entries={this.state.user.entries} />
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}  />
         <FaceRecognition box={box}  imageUrl={imageUrl}/>
