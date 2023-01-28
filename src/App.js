@@ -11,11 +11,11 @@ import Register from './components/Register/Register';
 import Modal from './components/Modal/Modal';
 import Profile from './components/Profile/Profile';
 
-//production backend url
-//const BACKEND_BASE_URL = "https://smartbrain.cyclic.app";
+//backend url
+const BACKEND_BASE_URL = "https://smartbrain.cyclic.app";
 
 // development backend url
- const BACKEND_BASE_URL = "http://localhost:3000";
+//const BACKEND_BASE_URL = "http://localhost:3000";
 const PARTICLES_BG_PROPS = {
   type: "cobweb",
   bg: true,
